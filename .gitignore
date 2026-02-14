@@ -9,7 +9,6 @@ build/
 # Environment & secrets (never commit real credentials)
 .env
 .env.*
-!.env.example
 *.pem
 *.key
 *.p12

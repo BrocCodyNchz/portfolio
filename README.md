@@ -95,7 +95,7 @@ The contact form uses **Cloudflare Turnstile** (bot protection) and **EmailJS** 
 
 **Note:** Set all for Production and Preview. Turnstile pre-clearance = No when using Vercel.
 
-For local development, copy `.env.example` to `.env` and fill in your credentials.
+For local development, create a `.env` file with the variables above.
 
 ## Customization
 

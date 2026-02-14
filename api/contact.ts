@@ -61,7 +61,8 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     const serviceId = process.env.EMAILJS_SERVICE_ID
     const templateId = process.env.EMAILJS_TEMPLATE_ID
     const publicKey = process.env.EMAILJS_PUBLIC_KEY
-    if (!serviceId || !templateId || !publicKey) {
+    const privateKey = process.env.EMAILJS_PRIVATE_KEY
+    if (!serviceId || !templateId || !publicKey || !privateKey) {
       return res.status(500).json({ error: 'Email service is not configured' })
     }
 
@@ -72,6 +73,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
         service_id: serviceId,
         template_id: templateId,
         user_id: publicKey,
+        accessToken: privateKey,
         template_params: {
           name: nameTrimmed,
           email: emailTrimmed,

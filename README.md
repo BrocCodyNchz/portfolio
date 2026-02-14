@@ -89,6 +89,9 @@ The contact form uses **Cloudflare Turnstile** (bot protection) and **EmailJS** 
 | `EMAILJS_SERVICE_ID` | EmailJS service ID |
 | `EMAILJS_TEMPLATE_ID` | EmailJS template ID |
 | `EMAILJS_PUBLIC_KEY` | EmailJS public key |
+| `EMAILJS_PRIVATE_KEY` | EmailJS private key (required for server-side) |
+
+**EmailJS server-side:** Go to [Account → Security](https://dashboard.emailjs.com/admin/account/security) and enable "Allow API calls from non-browser applications". Generate a Private Key there and add it as `EMAILJS_PRIVATE_KEY`.
 
 **Note:** Set all for Production and Preview. Turnstile pre-clearance = No when using Vercel.
 

@@ -325,7 +325,6 @@
       color: #00FF7F;
     }
   </style>
-  <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
 </head>
 <body class="bg-space">
   <header>
@@ -409,7 +408,6 @@
             <label for="message" style="display: block; margin-bottom: 0.5rem; font-size: 0.875rem; color: #B0B0B0;">Message</label>
             <textarea id="message" name="message" required rows="5" placeholder="Tell me about your project..." class="form-input" style="resize: none;"></textarea>
           </div>
-          <div class="cf-turnstile" data-sitekey="1x00000000000000000000AA" data-theme="dark" style="margin-bottom: 1.5rem;"></div>
           <p id="formError" style="display: none; color: #f87171; font-size: 0.875rem; margin-bottom: 1rem;"></p>
           <button type="submit" id="submitBtn" class="btn btn-primary" style="width: 100%;">Send Message</button>
         </form>
@@ -462,12 +460,6 @@
     form?.addEventListener('submit', async (e) => {
       e.preventDefault();
       formError.style.display = 'none';
-      const token = document.querySelector('[name="cf-turnstile-response"]')?.value;
-      if (!token) {
-        formError.textContent = 'Please complete the verification.';
-        formError.style.display = 'block';
-        return;
-      }
       submitBtn.disabled = true;
       submitBtn.textContent = 'Sending...';
       try {
@@ -477,8 +469,7 @@
           body: JSON.stringify({
             name: form.name.value,
             email: form.email.value,
-            message: form.message.value,
-            turnstileToken: token
+            message: form.message.value
           })
         });
         const data = await res.json();
@@ -488,12 +479,10 @@
         } else {
           formError.textContent = data.error || 'Something went wrong. Please try again.';
           formError.style.display = 'block';
-          // Turnstile will need refresh on error - user can reload
         }
       } catch {
         formError.textContent = 'Network error. Please try again.';
         formError.style.display = 'block';
-        // Turnstile will need refresh on error - user can reload
       }
       submitBtn.disabled = false;
       submitBtn.textContent = 'Send Message';

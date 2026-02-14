@@ -9,7 +9,7 @@ A modern portfolio website with an xAI, SpaceX, and Starlink-inspired aesthetic.
 - **Dark theme** with high contrast and spring green accents
 - **Responsive design** with mobile-first hamburger navigation
 - **Glass morphism** effects and smooth transitions
-- **Contact form** with Cloudflare Turnstile (bot protection) and Resend (email delivery)
+- **Contact form** with Resend (email delivery)
 - **Sections**: Hero, About, Contact
 
 ## Tech Stack
@@ -19,13 +19,11 @@ A modern portfolio website with an xAI, SpaceX, and Starlink-inspired aesthetic.
 - Vite 5.4
 - Tailwind CSS 3.4
 - Resend 6.x (email)
-- Cloudflare Turnstile (form protection)
 
 ## Security
 
 - Input validation and length limits (name: 100, email: 254, message: 5000 chars)
 - XSS protection via HTML escaping
-- Cloudflare Turnstile bot protection
 - Security headers (X-Content-Type-Options, X-Frame-Options, Referrer-Policy, etc.)
 - No secrets in client-side code
 
@@ -47,34 +45,16 @@ npm run preview
 
 ## Contact Form Setup
 
-The contact form uses **Resend** for email delivery and **Cloudflare Turnstile** for bot protection.
+The contact form uses **Resend** for email delivery.
 
-1. **Resend**: Sign up at [resend.com](https://resend.com), create an API key, and verify your domain (or use `onboarding@resend.dev` for testing).
-2. **Cloudflare Turnstile**: Get free keys at [Cloudflare Dashboard → Turnstile](https://dash.cloudflare.com/?to=/:account/turnstile).
-3. Add environment variables in Vercel (Project → Settings → Environment Variables):
+1. **Resend**: Sign up at [resend.com](https://resend.com), create an API key, and verify your domain (e.g. `oldaikai.resend.app`).
+2. Add environment variables in Vercel (Project → Settings → Environment Variables):
 
 | Variable | Description |
 |----------|-------------|
 | `RESEND_API_KEY` | Your Resend API key |
-| `RESEND_FROM_EMAIL` | Sender email (e.g. `onboarding@resend.dev`) |
-| `RESEND_TO_EMAIL` | Where to receive contact form messages |
-| `VITE_CLOUD_TURNSTILE_SITE_KEY` | Turnstile site key (public) — **VITE_ prefix required** for Vercel build |
-| `TURNSTILE_SECRET_KEY` | Turnstile secret key (server-only) |
-
-**Turnstile (remove "For testing only" message):**
-1. Go to [Cloudflare Dashboard → Turnstile](https://dash.cloudflare.com/?to=/:account/turnstile)
-2. Click **Add site**
-3. Enter your domain (e.g. `your-portfolio.vercel.app`) or use `*` for all
-4. Choose **Managed** (recommended) or **Non-interactive**
-5. Copy the **Site Key** and **Secret Key**
-6. Add both to Vercel Environment Variables and redeploy
-
-Without production keys, the widget shows "For testing only. If seen, report to site owner."
-
-**Still seeing "For testing only" after adding keys?**
-1. In Vercel → Settings → Environment Variables, set **both** Production and Preview for each variable
-2. Trigger a **new deployment** (Deployments → ⋮ → Redeploy)—env vars only apply to new builds
-3. Confirm the variable name is exactly `VITE_CLOUD_TURNSTILE_SITE_KEY` (VITE_ prefix required for Vite)
+| `RESEND_FROM_EMAIL` | Sender email (e.g. `contact@oldaikai.resend.app`) |
+| `RESEND_TO_EMAIL` | Where to receive contact form messages (e.g. `contact@oldaikai.resend.app`) |
 
 For local development, copy `.env.example` to `.env` and fill in your values. Use `vercel dev` to test the API locally.
 

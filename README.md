@@ -45,23 +45,23 @@ npm run preview
 
 ## Contact Form Setup
 
-The contact form uses **Resend** for email delivery. Messages are sent from `onboarding@resend.dev` (no domain verification needed).
-
-**Note:** With the testing sender, Resend only allows sending to your Resend account email. To send to other addresses, verify a domain at [resend.com/domains](https://resend.com/domains).
+The contact form uses **Resend** for email delivery. You must verify a domain at [resend.com/domains](https://resend.com/domains) — the testing sender (`onboarding@resend.dev`) is not for production use.
 
 ### Resend Setup
 
 1. Sign up at [resend.com](https://resend.com)
-2. Create an API key at [resend.com/api-keys](https://resend.com/api-keys)
+2. Add and verify your domain at [resend.com/domains](https://resend.com/domains) (add DNS records they provide)
+3. Create an API key at [resend.com/api-keys](https://resend.com/api-keys)
 
 ### Vercel Environment Variables
 
 | Variable | Description |
 |----------|-------------|
 | `RESEND_API_KEY` | Your Resend API key |
-| `RESEND_TO_EMAIL` | Where to receive contact form messages (your Resend account email when using testing sender) |
+| `RESEND_FROM_EMAIL` | Sender address (must use your verified domain, e.g. `contact@yourdomain.com`) |
+| `RESEND_TO_EMAIL` | Where to receive contact form messages |
 
-**Keep `RESEND_TO_EMAIL` in Vercel only** — never commit your email to the repo.
+**Keep these in Vercel only** — never commit emails or API keys to the repo.
 
 For local development, copy `.env.example` to `.env` and fill in your credentials.
 

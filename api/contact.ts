@@ -9,8 +9,6 @@ const LIMITS = {
 } as const
 
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
-// Use Resend's default sender (no domain verification needed)
-const FROM_EMAIL = 'onboarding@resend.dev'
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
   if (req.method !== 'POST') {
@@ -52,16 +50,17 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     }
 
     const apiKey = process.env.RESEND_API_KEY
+    const fromEmail = process.env.RESEND_FROM_EMAIL
     const toEmail = process.env.RESEND_TO_EMAIL
-    if (!apiKey || !toEmail) {
-      console.error('Missing RESEND_API_KEY or RESEND_TO_EMAIL')
+    if (!apiKey || !fromEmail || !toEmail) {
+      console.error('Missing RESEND_API_KEY, RESEND_FROM_EMAIL, or RESEND_TO_EMAIL')
       return res.status(500).json({ error: 'Email service is not configured' })
     }
 
     const resend = new Resend(apiKey)
 
     const { data, error } = await resend.emails.send({
-      from: FROM_EMAIL,
+      from: fromEmail,
       to: toEmail,
       replyTo: emailTrimmed,
       subject: `Portfolio Contact from ${escapeHtml(nameTrimmed)}`,

@@ -2,6 +2,8 @@
 
 A modern portfolio website with an xAI, SpaceX, and Starlink-inspired aesthetic. Built with React, TypeScript, and Tailwind CSS.
 
+**Last updated:** February 2026
+
 ## Features
 
 - **Dark theme** with high contrast and spring green accents
@@ -13,11 +15,19 @@ A modern portfolio website with an xAI, SpaceX, and Starlink-inspired aesthetic.
 ## Tech Stack
 
 - React 18
-- TypeScript
-- Vite 5
-- Tailwind CSS 3
-- Resend (email)
+- TypeScript 5.6
+- Vite 5.4
+- Tailwind CSS 3.4
+- Resend 6.x (email)
 - Cloudflare Turnstile (form protection)
+
+## Security
+
+- Input validation and length limits (name: 100, email: 254, message: 5000 chars)
+- XSS protection via HTML escaping
+- Cloudflare Turnstile bot protection
+- Security headers (X-Content-Type-Options, X-Frame-Options, Referrer-Policy, etc.)
+- No secrets in client-side code
 
 ## Getting Started
 

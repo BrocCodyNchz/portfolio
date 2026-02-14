@@ -1,6 +1,16 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node'
 import { Resend } from 'resend'
 
+// Input limits to prevent DoS (per OWASP recommendations)
+const LIMITS = {
+  name: 100,
+  email: 254,
+  message: 5000,
+  token: 2048,
+} as const
+
+const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+
 const resend = new Resend(process.env.RESEND_API_KEY)
 
 async function validateTurnstile(token: string, remoteip?: string): Promise<{ success: boolean; 'error-codes'?: string[] }> {
@@ -35,18 +45,42 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 
   try {
     const { name, email, message, turnstileToken } = req.body as {
-      name?: string
-      email?: string
-      message?: string
-      turnstileToken?: string
+      name?: unknown
+      email?: unknown
+      message?: unknown
+      turnstileToken?: unknown
     }
 
-    if (!name?.trim() || !email?.trim() || !message?.trim()) {
+    if (!name || !email || !message || typeof name !== 'string' || typeof email !== 'string' || typeof message !== 'string') {
       return res.status(400).json({ error: 'Name, email, and message are required' })
     }
 
-    if (!turnstileToken) {
+    const nameTrimmed = name.trim()
+    const emailTrimmed = email.trim()
+    const messageTrimmed = message.trim()
+
+    if (!nameTrimmed || !emailTrimmed || !messageTrimmed) {
+      return res.status(400).json({ error: 'Name, email, and message are required' })
+    }
+
+    if (nameTrimmed.length > LIMITS.name) {
+      return res.status(400).json({ error: `Name must be ${LIMITS.name} characters or less` })
+    }
+    if (emailTrimmed.length > LIMITS.email) {
+      return res.status(400).json({ error: `Email must be ${LIMITS.email} characters or less` })
+    }
+    if (messageTrimmed.length > LIMITS.message) {
+      return res.status(400).json({ error: `Message must be ${LIMITS.message} characters or less` })
+    }
+    if (!EMAIL_REGEX.test(emailTrimmed)) {
+      return res.status(400).json({ error: 'Invalid email format' })
+    }
+
+    if (!turnstileToken || typeof turnstileToken !== 'string') {
       return res.status(400).json({ error: 'Verification required. Please complete the challenge.' })
+    }
+    if (turnstileToken.length > LIMITS.token) {
+      return res.status(400).json({ error: 'Invalid verification token' })
     }
 
     const remoteip =
@@ -54,7 +88,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       (req.headers['x-forwarded-for'] as string)?.split(',')[0]?.trim() ||
       undefined
 
-    const turnstileResult = await validateTurnstile(turnstileToken, remoteip)
+    const turnstileResult = await validateTurnstile(turnstileToken.trim(), remoteip)
     if (!turnstileResult.success) {
       return res.status(400).json({
         error: 'Verification failed. Please try again.',
@@ -73,13 +107,13 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     const { data, error } = await resend.emails.send({
       from: fromEmail,
       to: toEmail,
-      subject: `Portfolio Contact from ${name.trim()}`,
+      subject: `Portfolio Contact from ${escapeHtml(nameTrimmed)}`,
       html: `
         <h2>New contact form submission</h2>
-        <p><strong>Name:</strong> ${escapeHtml(name.trim())}</p>
-        <p><strong>Email:</strong> ${escapeHtml(email.trim())}</p>
+        <p><strong>Name:</strong> ${escapeHtml(nameTrimmed)}</p>
+        <p><strong>Email:</strong> ${escapeHtml(emailTrimmed)}</p>
         <p><strong>Message:</strong></p>
-        <p>${escapeHtml(message.trim()).replace(/\n/g, '<br>')}</p>
+        <p>${escapeHtml(messageTrimmed).replace(/\n/g, '<br>')}</p>
       `,
     })
 

@@ -94,6 +94,8 @@ export function ContactSection() {
                 name="name"
                 type="text"
                 required
+                maxLength={100}
+                autoComplete="name"
                 className="w-full rounded-lg border border-white/20 bg-grey-900/50 px-4 py-3 text-white placeholder-grey-500 focus:border-green focus:outline-none focus:ring-2 focus:ring-green/20"
                 placeholder="Your name"
                 disabled={status === 'loading'}
@@ -108,6 +110,8 @@ export function ContactSection() {
                 name="email"
                 type="email"
                 required
+                maxLength={254}
+                autoComplete="email"
                 className="w-full rounded-lg border border-white/20 bg-grey-900/50 px-4 py-3 text-white placeholder-grey-500 focus:border-green focus:outline-none focus:ring-2 focus:ring-green/20"
                 placeholder="you@example.com"
                 disabled={status === 'loading'}
@@ -122,6 +126,7 @@ export function ContactSection() {
                 name="message"
                 required
                 rows={5}
+                maxLength={5000}
                 className="w-full resize-none rounded-lg border border-white/20 bg-grey-900/50 px-4 py-3 text-white placeholder-grey-500 focus:border-green focus:outline-none focus:ring-2 focus:ring-green/20"
                 placeholder="Tell me about your project..."
                 disabled={status === 'loading'}
@@ -152,25 +157,6 @@ export function ContactSection() {
             </button>
           </form>
         )}
-
-        <div className="mt-12 flex flex-wrap justify-center gap-4">
-          <a
-            href="https://github.com/broccodynchz"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="rounded-lg border-2 border-white/20 px-6 py-3 font-semibold text-white transition-all duration-300 hover:border-green/50 hover:bg-white/5"
-          >
-            GitHub
-          </a>
-          <a
-            href="https://linkedin.com/in/cody-mcfarland"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="rounded-lg border-2 border-white/20 px-6 py-3 font-semibold text-white transition-all duration-300 hover:border-green/50 hover:bg-white/5"
-          >
-            LinkedIn
-          </a>
-        </div>
       </div>
     </section>
   )

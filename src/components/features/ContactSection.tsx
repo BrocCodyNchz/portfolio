@@ -10,9 +10,7 @@ import type { TurnstileInstance } from '@marsidev/react-turnstile'
 
 const API_URL = '/api/contact'
 
-// Cloudflare test keys always show "For testing only" - production keys remove this
-const TURNSTILE_TEST_SITE_KEY = '1x00000000000000000000AA'
-// Injected at build time via vite.config.ts define
+// Injected at build time via vite.config.ts (CLOUD_TURNSTILE_SITE_KEY in Vercel)
 declare const __TURNSTILE_SITE_KEY__: string
 
 export function ContactSection() {
@@ -150,11 +148,6 @@ export function ContactSection() {
               onSuccess={(token) => setTurnstileToken(token)}
               onExpire={() => setTurnstileToken(null)}
             />
-            {siteKey === TURNSTILE_TEST_SITE_KEY && (
-              <p className="rounded-lg border border-amber-500/30 bg-amber-500/5 px-4 py-2 text-xs text-amber-200">
-                Turnstile using test keys. Add <strong>CLOUD_TURNSTILE_SITE_KEY</strong> in Vercel (Production + Preview), then redeploy.
-              </p>
-            )}
 
             {errorMessage && (
               <p className="text-sm text-red-400">{errorMessage}</p>

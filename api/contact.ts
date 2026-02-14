@@ -10,7 +10,8 @@ const LIMITS = {
 
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
 const TO_EMAIL = 'contact@oldaikai.resend.app'
-const FROM_EMAIL = 'contact@oldaikai.resend.app'
+// Use Resend's default sender (no domain verification needed)
+const FROM_EMAIL = 'onboarding@resend.dev'
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
   if (req.method !== 'POST') {

@@ -1,5 +1,5 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node'
-import { Resend } from 'resend'
+import nodemailer from 'nodemailer'
 
 // Input limits to prevent DoS (per OWASP recommendations)
 const LIMITS = {
@@ -9,8 +9,7 @@ const LIMITS = {
 } as const
 
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
-
-const resend = new Resend(process.env.RESEND_API_KEY)
+const TO_EMAIL = 'codydev.expire209@passinbox.com'
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
   if (req.method !== 'POST') {
@@ -51,17 +50,31 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       return res.status(400).json({ error: 'Invalid email format' })
     }
 
-    const fromEmail = process.env.RESEND_FROM_EMAIL
-    const toEmail = process.env.RESEND_TO_EMAIL
+    // SMTP configuration
+    const smtpHost = process.env.SMTP_HOST
+    const smtpPort = process.env.SMTP_PORT
+    const smtpUser = process.env.SMTP_USER
+    const smtpPass = process.env.SMTP_PASS
 
-    if (!process.env.RESEND_API_KEY || !fromEmail || !toEmail) {
-      console.error('Missing Resend configuration')
+    if (!smtpHost || !smtpPort || !smtpUser || !smtpPass) {
+      console.error('Missing SMTP configuration')
       return res.status(500).json({ error: 'Email service is not configured' })
     }
 
-    const { data, error } = await resend.emails.send({
-      from: fromEmail,
-      to: toEmail,
+    const transporter = nodemailer.createTransport({
+      host: smtpHost,
+      port: parseInt(smtpPort, 10),
+      secure: parseInt(smtpPort, 10) === 465,
+      auth: {
+        user: smtpUser,
+        pass: smtpPass,
+      },
+    })
+
+    await transporter.sendMail({
+      from: `"Portfolio Contact" <${smtpUser}>`,
+      to: TO_EMAIL,
+      replyTo: emailTrimmed,
       subject: `Portfolio Contact from ${escapeHtml(nameTrimmed)}`,
       html: `
         <h2>New contact form submission</h2>
@@ -72,15 +85,10 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       `,
     })
 
-    if (error) {
-      console.error('Resend error:', error)
-      return res.status(500).json({ error: 'Failed to send message. Please try again.' })
-    }
-
-    return res.status(200).json({ success: true, id: data?.id })
+    return res.status(200).json({ success: true })
   } catch (err) {
     console.error('Contact API error:', err)
-    return res.status(500).json({ error: 'An unexpected error occurred' })
+    return res.status(500).json({ error: 'Failed to send message. Please try again.' })
   }
 }
 

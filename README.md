@@ -9,7 +9,7 @@ A modern portfolio website with an xAI, SpaceX, and Starlink-inspired aesthetic.
 - **Dark theme** with high contrast and spring green accents
 - **Responsive design** with mobile-first hamburger navigation
 - **Glass morphism** effects and smooth transitions
-- **Contact form** with Resend (email delivery)
+- **Contact form** with nodemailer (SMTP email delivery)
 - **Sections**: Hero, About, Contact
 
 ## Tech Stack
@@ -18,7 +18,7 @@ A modern portfolio website with an xAI, SpaceX, and Starlink-inspired aesthetic.
 - TypeScript 5.6
 - Vite 5.4
 - Tailwind CSS 3.4
-- Resend 6.x (email)
+- Nodemailer (SMTP email)
 
 ## Security
 
@@ -45,18 +45,24 @@ npm run preview
 
 ## Contact Form Setup
 
-The contact form uses **Resend** for email delivery.
+The contact form uses **nodemailer** for direct SMTP email sending to `codydev.expire209@passinbox.com`.
 
-1. **Resend**: Sign up at [resend.com](https://resend.com), create an API key, and verify your domain (e.g. `oldaikai.resend.app`).
-2. Add environment variables in Vercel (Project → Settings → Environment Variables):
+1. **SMTP Provider**: Use Gmail, Outlook, or another SMTP service.
+2. **Gmail Setup** (recommended):
+   - Enable 2FA in Google Account settings
+   - Generate an App Password: [https://myaccount.google.com/apppasswords](https://myaccount.google.com/apppasswords)
+   - Use the 16-character app password (not your regular password)
+
+3. Add environment variables in Vercel (Project → Settings → Environment Variables):
 
 | Variable | Description |
 |----------|-------------|
-| `RESEND_API_KEY` | Your Resend API key |
-| `RESEND_FROM_EMAIL` | Sender email (e.g. `contact@oldaikai.resend.app`) |
-| `RESEND_TO_EMAIL` | Where to receive contact form messages (e.g. `contact@oldaikai.resend.app`) |
+| `SMTP_HOST` | SMTP server (e.g. `smtp.gmail.com`) |
+| `SMTP_PORT` | SMTP port (`587` for TLS, `465` for SSL) |
+| `SMTP_USER` | Your email address |
+| `SMTP_PASS` | App password (for Gmail) or account password |
 
-For local development, copy `.env.example` to `.env` and fill in your values. Use `vercel dev` to test the API locally.
+For local development, copy `.env.example` to `.env` and fill in your SMTP credentials.
 
 ## Customization
 

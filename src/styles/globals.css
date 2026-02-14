@@ -1,0 +1,42 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --color-black: #000000;
+  --color-white: #FEFEFE;
+  --color-green: #00FF7F;
+  --color-green-dark: #00CC66;
+  --grey-900: #1A1A1A;
+  --grey-800: #2A2A2A;
+  --grey-700: #404040;
+  --transition-base: 0.3s;
+  --ease-smooth: cubic-bezier(0.45, 0, 0.15, 1);
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: 'Inter', system-ui, sans-serif;
+  background-color: var(--color-black);
+  color: var(--color-white);
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* Subtle starfield / grid overlay for space aesthetic */
+.bg-space-overlay {
+  background-image: 
+    radial-gradient(ellipse 80% 50% at 50% -20%, rgba(0, 255, 127, 0.08), transparent),
+    linear-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+  background-size: 100% 100%, 80px 80px, 80px 80px;
+}

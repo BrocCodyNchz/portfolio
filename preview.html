@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Cody McFarland | Portfolio</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'Inter', system-ui, sans-serif;
+      background: #000;
+      color: #FEFEFE;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+    .bg-space {
+      background-image:
+        radial-gradient(ellipse 80% 50% at 50% -20%, rgba(0, 255, 127, 0.08), transparent),
+        linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px);
+      background-size: 100% 100%, 80px 80px, 80px 80px;
+    }
+    .green { color: #00FF7F; }
+    .grey-300 { color: #B0B0B0; }
+    .grey-500 { color: #808080; }
+    .grey-900 { background: #1A1A1A; }
+    header {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 50;
+      border-bottom: 1px solid rgba(255,255,255,0.1);
+      background: rgba(0,0,0,0.8);
+      backdrop-filter: blur(16px);
+    }
+    nav {
+      max-width: 80rem;
+      margin: 0 auto;
+      padding: 1rem 1.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    nav a { text-decoration: none; color: #FEFEFE; font-weight: 600; transition: color 0.3s; }
+    nav a:hover { color: #00FF7F; }
+    .nav-links { display: none; gap: 2rem; }
+    @media (min-width: 768px) { .nav-links { display: flex; } }
+    .nav-links a { font-size: 0.875rem; color: #B0B0B0; }
+    .nav-links a:hover { color: #FEFEFE; }
+    .hamburger {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      width: 44px; height: 44px;
+      background: rgba(26,26,26,0.5);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 8px;
+      cursor: pointer;
+    }
+    @media (min-width: 768px) { .hamburger { display: none; } }
+    .hamburger span {
+      width: 20px; height: 2px;
+      background: #FEFEFE;
+      margin: 2px 0;
+      transition: all 0.3s;
+    }
+    .hamburger.open span:nth-child(1) { transform: translateY(8px) rotate(45deg); }
+    .hamburger.open span:nth-child(2) { opacity: 0; }
+    .hamburger.open span:nth-child(3) { transform: translateY(-8px) rotate(-45deg); }
+    .mobile-menu {
+      position: fixed;
+      top: 73px; right: 0;
+      width: 288px;
+      background: rgba(26,26,26,0.95);
+      backdrop-filter: blur(24px);
+      border-left: 1px solid rgba(255,255,255,0.1);
+      padding: 1.5rem;
+      transform: translateX(100%);
+      transition: transform 0.3s ease;
+      z-index: 50;
+    }
+    .mobile-menu.open { transform: translateX(0); }
+    @media (min-width: 768px) { .mobile-menu { display: none; } }
+    .mobile-menu a {
+      display: block;
+      padding: 0.75rem 0;
+      color: #B0B0B0;
+      text-decoration: none;
+    }
+    .mobile-menu a:hover { color: #00FF7F; }
+    .overlay {
+      position: fixed;
+      inset: 0;
+      top: 73px;
+      background: rgba(0,0,0,0.6);
+      backdrop-filter: blur(4px);
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s;
+    }
+    .overlay.open { opacity: 1; pointer-events: auto; }
+    @media (min-width: 768px) { .overlay { display: none; } }
+    section { padding: 6rem 1.5rem; border-top: 1px solid rgba(255,255,255,0.1); }
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding-top: 6rem;
+      text-align: center;
+    }
+    .hero h1 {
+      font-size: clamp(2.5rem, 8vw, 5rem);
+      font-weight: 700;
+      line-height: 1.1;
+      margin-bottom: 1.5rem;
+    }
+    .hero p.lead {
+      font-size: 1.125rem;
+      color: #B0B0B0;
+      max-width: 42rem;
+      margin: 0 auto 3rem;
+    }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 1rem 2rem;
+      font-weight: 600;
+      border-radius: 8px;
+      text-decoration: none;
+      transition: all 0.3s;
+    }
+    .btn-primary {
+      background: #00FF7F;
+      color: #000;
+    }
+    .btn-primary:hover {
+      background: #00CC66;
+      box-shadow: 0 0 30px rgba(0,255,127,0.4);
+      transform: translateY(-2px);
+    }
+    .btn-outline {
+      border: 2px solid rgba(0,255,127,0.5);
+      color: #FEFEFE;
+    }
+    .btn-outline:hover {
+      border-color: #00FF7F;
+      background: rgba(0,255,127,0.1);
+    }
+    .btn-row { display: flex; flex-wrap: wrap; gap: 1rem; justify-content: center; margin-top: 1rem; }
+    .section-label {
+      font-size: 0.75rem;
+      font-weight: 500;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: rgba(0,255,127,0.9);
+      margin-bottom: 0.5rem;
+    }
+    .section-title {
+      font-size: clamp(2rem, 4vw, 3rem);
+      font-weight: 700;
+      margin-bottom: 3rem;
+    }
+    .max-w-6xl { max-width: 72rem; margin: 0 auto; }
+    .about-grid {
+      display: grid;
+      gap: 3rem;
+    }
+    @media (min-width: 1024px) { .about-grid { grid-template-columns: 1fr 1fr; } }
+    .about-grid p {
+      font-size: 1.125rem;
+      line-height: 1.75;
+      color: #B0B0B0;
+    }
+    .card {
+      background: rgba(26,26,26,0.5);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 12px;
+      padding: 2rem;
+      backdrop-filter: blur(4px);
+    }
+    .card h3 { font-size: 1.125rem; margin-bottom: 1.5rem; }
+    .card ul { list-style: none; }
+    .card li {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      color: #B0B0B0;
+      margin-bottom: 1rem;
+    }
+    .card li::before {
+      content: '';
+      width: 6px; height: 6px;
+      background: #00FF7F;
+      border-radius: 50%;
+    }
+    .projects-grid {
+      display: grid;
+      gap: 2rem;
+    }
+    @media (min-width: 768px) { .projects-grid { grid-template-columns: repeat(2, 1fr); } }
+    @media (min-width: 1024px) { .projects-grid { grid-template-columns: repeat(3, 1fr); } }
+    .project-card {
+      background: rgba(26,26,26,0.3);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 12px;
+      padding: 2rem;
+      backdrop-filter: blur(4px);
+      transition: all 0.3s;
+    }
+    .project-card:hover {
+      border-color: rgba(0,255,127,0.3);
+      transform: translateY(-4px);
+      box-shadow: 0 8px 30px rgba(0,0,0,0.5);
+    }
+    .project-card h3 {
+      font-size: 1.25rem;
+      margin-bottom: 0.75rem;
+      transition: color 0.3s;
+    }
+    .project-card:hover h3 { color: #00FF7F; }
+    .project-card p { color: #B0B0B0; margin-bottom: 1.5rem; }
+    .tags { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 1.5rem; }
+    .tag {
+      padding: 0.25rem 0.75rem;
+      font-size: 0.75rem;
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 6px;
+      color: #B0B0B0;
+    }
+    .project-card a {
+      color: #00FF7F;
+      text-decoration: none;
+      font-weight: 500;
+    }
+    .project-card a:hover { color: #00CC66; }
+    .contact { text-align: center; }
+    .contact .section-title { margin-bottom: 1.5rem; }
+    .contact p.lead { margin-bottom: 3rem; }
+    footer {
+      border-top: 1px solid rgba(255,255,255,0.1);
+      background: rgba(0,0,0,0.2);
+      backdrop-filter: blur(4px);
+      padding: 2rem 1.5rem;
+    }
+    .footer-inner {
+      max-width: 80rem;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1rem;
+    }
+    @media (min-width: 640px) {
+      .footer-inner { flex-direction: row; justify-content: space-between; }
+    }
+    footer a {
+      color: #808080;
+      text-decoration: none;
+      font-size: 0.875rem;
+    }
+    footer a:hover { color: #00FF7F; }
+    .footer-links { display: flex; gap: 1.5rem; }
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+    @keyframes slideUp {
+      from { opacity: 0; transform: translateY(30px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .animate-fade-in { animation: fadeIn 0.8s ease-out forwards; }
+    .animate-slide-up { animation: slideUp 0.8s ease-out forwards; }
+    .delay-200 { animation-delay: 200ms; }
+    .delay-400 { animation-delay: 400ms; }
+    .delay-600 { animation-delay: 600ms; }
+    .scroll-indicator {
+      position: absolute;
+      bottom: 3rem;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 1px;
+      height: 2rem;
+      background: linear-gradient(to bottom, rgba(0,255,127,0.6), transparent);
+      animation: bounce 2s infinite;
+    }
+    @keyframes bounce {
+      0%, 100% { transform: translateX(-50%) translateY(0); }
+      50% { transform: translateX(-50%) translateY(10px); }
+    }
+  </style>
+</head>
+<body class="bg-space">
+  <header>
+    <nav>
+      <a href="#">Cody McFarland</a>
+      <ul class="nav-links">
+        <li><a href="#about">About</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+      <button class="hamburger" id="hamburger" aria-label="Toggle menu">
+        <span></span><span></span><span></span>
+      </button>
+    </nav>
+  </header>
+  <div class="overlay" id="overlay"></div>
+  <div class="mobile-menu" id="mobileMenu">
+    <a href="#about">About</a>
+    <a href="#contact">Contact</a>
+  </div>
+
+  <section class="hero">
+    <div>
+      <p class="section-label animate-fade-in">Building the future</p>
+      <h1 class="animate-slide-up delay-200">
+        Innovation<br><span class="green">Through Code</span>
+      </h1>
+      <p class="lead animate-slide-up delay-400">
+        Crafting exceptional digital experiences that push boundaries and transform ideas into reality.
+      </p>
+      <div class="btn-row animate-slide-up delay-600">
+        <a href="#about" class="btn btn-primary">Learn More</a>
+        <a href="#contact" class="btn btn-outline">Get in Touch</a>
+      </div>
+      <div class="scroll-indicator"></div>
+    </div>
+  </section>
+
+  <section id="about">
+    <div class="max-w-6xl">
+      <p class="section-label">About</p>
+      <h2 class="section-title">
+        New developer.<br>
+        <span class="grey-300">Ready to grow.</span>
+      </h2>
+      <div class="about-grid">
+        <div>
+          <p>I recently graduated from General Assembly's Software Engineering Immersive bootcamp, where I learned full-stack development and built a strong foundation in modern web technologies.</p>
+          <p style="margin-top: 1.5rem;"><span class="green" style="font-weight: 500;">This website is itself a project</span>—a portfolio I built to showcase my skills and introduce myself to the tech community. It's built with React, TypeScript, and Tailwind CSS, featuring a design inspired by xAI, SpaceX, and Starlink.</p>
+        </div>
+        <div class="card">
+          <h3>What I've Learned</h3>
+          <ul>
+            <li>Full-Stack Development</li>
+            <li>React & TypeScript</li>
+            <li>RESTful APIs</li>
+            <li>Responsive Design</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="contact" class="contact">
+    <div class="max-w-6xl">
+      <p class="section-label">Contact</p>
+      <h2 class="section-title">
+        Let's build something<br>
+        <span class="green">extraordinary</span>
+      </h2>
+      <p class="lead">Have a project in mind? I'd love to hear about it. Reach out and let's create something amazing together.</p>
+      <div class="btn-row">
+        <a href="mailto:codydev.expire209@passinbox.com" class="btn btn-primary">Get in Touch</a>
+        <a href="https://github.com/broccodynchz" target="_blank" rel="noopener noreferrer" class="btn btn-outline">GitHub</a>
+        <a href="https://linkedin.com/in/cody-mcfarland" target="_blank" rel="noopener noreferrer" class="btn btn-outline">LinkedIn</a>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="footer-inner">
+      <p class="grey-500" style="font-size: 0.875rem;">© 2025 Cody McFarland. All rights reserved.</p>
+      <div class="footer-links">
+        <a href="#about">About</a>
+        <a href="#contact">Contact</a>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    const hamburger = document.getElementById('hamburger');
+    const mobileMenu = document.getElementById('mobileMenu');
+    const overlay = document.getElementById('overlay');
+
+    function toggleMenu() {
+      hamburger.classList.toggle('open');
+      mobileMenu.classList.toggle('open');
+      overlay.classList.toggle('open');
+    }
+
+    function closeMenu() {
+      hamburger.classList.remove('open');
+      mobileMenu.classList.remove('open');
+      overlay.classList.remove('open');
+    }
+
+    hamburger.addEventListener('click', toggleMenu);
+    overlay.addEventListener('click', closeMenu);
+    mobileMenu.querySelectorAll('a').forEach(a => a.addEventListener('click', closeMenu));
+  </script>
+</body>
+</html>

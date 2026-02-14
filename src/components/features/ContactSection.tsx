@@ -152,7 +152,7 @@ export function ContactSection() {
             />
             {siteKey === TURNSTILE_TEST_SITE_KEY && (
               <p className="rounded-lg border border-amber-500/30 bg-amber-500/5 px-4 py-2 text-xs text-amber-200">
-                Turnstile using test keys. Add <strong>VITE_TURNSTILE_SITE_KEY</strong> in Vercel (Production + Preview), then redeploy.
+                Turnstile using test keys. Add <strong>CLOUD_TURNSTILE_SITE_KEY</strong> in Vercel (Production + Preview), then redeploy.
               </p>
             )}
 

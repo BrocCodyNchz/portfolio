@@ -71,6 +71,11 @@ The contact form uses **Resend** for email delivery and **Cloudflare Turnstile**
 
 Without production keys, the widget shows "For testing only. If seen, report to site owner."
 
+**Still seeing "For testing only" after adding keys?**
+1. In Vercel → Settings → Environment Variables, set **both** Production and Preview for each variable
+2. Trigger a **new deployment** (Deployments → ⋮ → Redeploy)—env vars only apply to new builds
+3. Confirm the variable name is exactly `VITE_TURNSTILE_SITE_KEY` (case-sensitive)
+
 For local development, copy `.env.example` to `.env` and fill in your values. Use `vercel dev` to test the API locally.
 
 ## Customization

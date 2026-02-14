@@ -3,6 +3,11 @@
   "private": true,
   "version": "1.0.0",
   "type": "module",
+  "overrides": {
+    "glob": "^10.5.0",
+    "tar": "^6.2.2",
+    "rimraf": "^5.0.0"
+  },
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build",

@@ -26,17 +26,39 @@ export function ContactSection() {
       return
     }
 
+    const form = formRef.current
+    const fromName = (form.elements.namedItem('from_name') as HTMLInputElement)?.value ?? ''
+    const fromEmail = (form.elements.namedItem('from_email') as HTMLInputElement)?.value ?? ''
+    const message = (form.elements.namedItem('message') as HTMLTextAreaElement)?.value ?? ''
+
     setStatus('loading')
 
     try {
-      await emailjs.sendForm(SERVICE_ID, TEMPLATE_ID, formRef.current, {
-        publicKey: PUBLIC_KEY,
-      })
+      await emailjs.send(
+        SERVICE_ID,
+        TEMPLATE_ID,
+        {
+          name: fromName,
+          email: fromEmail,
+          message,
+          from_name: fromName,
+          from_email: fromEmail,
+          title: `Contact from ${fromName}`,
+          time: new Date().toLocaleString(),
+        },
+        { publicKey: PUBLIC_KEY }
+      )
       setStatus('success')
-      formRef.current.reset()
+      form.reset()
     } catch (err) {
       console.error('EmailJS error:', err)
-      setErrorMessage('Failed to send message. Please try again.')
+      const errMsg = err instanceof Error ? err.message : String(err)
+      const is422 = errMsg.includes('422') || (err as { status?: number })?.status === 422
+      setErrorMessage(
+        is422
+          ? 'Template mismatch. Ensure your EmailJS template uses {{from_name}}, {{from_email}}, {{message}}.'
+          : 'Failed to send message. Please try again.'
+      )
       setStatus('error')
     }
   }

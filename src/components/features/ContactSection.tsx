@@ -1,65 +1,70 @@
 /**
- * ContactSection - Contact form with EmailJS
+ * ContactSection - Contact form with Turnstile and EmailJS
  *
- * @purpose Collects messages via form, sent via EmailJS (client-side, no backend needed)
+ * @purpose Collects messages via form, Turnstile verifies human, sent via EmailJS
  */
 
 import { useState, useRef } from 'react'
-import emailjs from '@emailjs/browser'
+import { Turnstile } from '@marsidev/react-turnstile'
+import type { TurnstileInstance } from '@marsidev/react-turnstile'
 
-const SERVICE_ID = import.meta.env.VITE_EMAILJS_SERVICE_ID
-const TEMPLATE_ID = import.meta.env.VITE_EMAILJS_TEMPLATE_ID
-const PUBLIC_KEY = import.meta.env.VITE_EMAILJS_PUBLIC_KEY
+const API_URL = '/api/contact'
+const siteKey = import.meta.env.VITE_TURNSTILE_SITE_KEY || '1x00000000000000000000AA'
 
 export function ContactSection() {
   const formRef = useRef<HTMLFormElement>(null)
+  const turnstileRef = useRef<TurnstileInstance | null>(null)
   const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle')
   const [errorMessage, setErrorMessage] = useState<string>('')
+  const [turnstileToken, setTurnstileToken] = useState<string | null>(null)
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     setErrorMessage('')
 
-    if (!formRef.current || !SERVICE_ID || !TEMPLATE_ID || !PUBLIC_KEY) {
-      setErrorMessage('Email service is not configured.')
-      setStatus('error')
+    const form = formRef.current
+    if (!form) return
+
+    const token = turnstileToken ?? (form.elements.namedItem('cf-turnstile-response') as HTMLInputElement)?.value
+    if (!token) {
+      setErrorMessage('Please complete the verification.')
       return
     }
-
-    const form = formRef.current
-    const fromName = (form.elements.namedItem('from_name') as HTMLInputElement)?.value ?? ''
-    const fromEmail = (form.elements.namedItem('from_email') as HTMLInputElement)?.value ?? ''
-    const message = (form.elements.namedItem('message') as HTMLTextAreaElement)?.value ?? ''
 
     setStatus('loading')
 
     try {
-      await emailjs.send(
-        SERVICE_ID,
-        TEMPLATE_ID,
-        {
-          name: fromName,
-          email: fromEmail,
-          message,
-          from_name: fromName,
-          from_email: fromEmail,
-          title: `Contact from ${fromName}`,
-          time: new Date().toLocaleString(),
-        },
-        { publicKey: PUBLIC_KEY }
-      )
+      const formData = new FormData(form)
+      const response = await fetch(API_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          name: formData.get('from_name'),
+          email: formData.get('from_email'),
+          message: formData.get('message'),
+          turnstileToken: token,
+        }),
+      })
+
+      const data = (await response.json()) as { error?: string }
+
+      if (!response.ok) {
+        setErrorMessage(data.error ?? 'Something went wrong. Please try again.')
+        setStatus('error')
+        turnstileRef.current?.reset()
+        setTurnstileToken(null)
+        return
+      }
+
       setStatus('success')
       form.reset()
-    } catch (err) {
-      console.error('EmailJS error:', err)
-      const errMsg = err instanceof Error ? err.message : String(err)
-      const is422 = errMsg.includes('422') || (err as { status?: number })?.status === 422
-      setErrorMessage(
-        is422
-          ? 'Template mismatch. Ensure your EmailJS template uses {{from_name}}, {{from_email}}, {{message}}.'
-          : 'Failed to send message. Please try again.'
-      )
+      setTurnstileToken(null)
+      turnstileRef.current?.reset()
+    } catch {
+      setErrorMessage('Network error. Please try again.')
       setStatus('error')
+      turnstileRef.current?.reset()
+      setTurnstileToken(null)
     }
   }
 
@@ -132,9 +137,15 @@ export function ContactSection() {
               />
             </div>
 
-            {errorMessage && (
-              <p className="text-sm text-red-400">{errorMessage}</p>
-            )}
+            <Turnstile
+              ref={turnstileRef}
+              siteKey={siteKey}
+              options={{ theme: 'dark', size: 'normal' }}
+              onSuccess={(token) => setTurnstileToken(token)}
+              onExpire={() => setTurnstileToken(null)}
+            />
+
+            {errorMessage && <p className="text-sm text-red-400">{errorMessage}</p>}
 
             <button
               type="submit"

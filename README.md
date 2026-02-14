@@ -9,7 +9,7 @@ A modern portfolio website with an xAI, SpaceX, and Starlink-inspired aesthetic.
 - **Dark theme** with high contrast and spring green accents
 - **Responsive design** with mobile-first hamburger navigation
 - **Glass morphism** effects and smooth transitions
-- **Contact form** with EmailJS (client-side email)
+- **Contact form** with Turnstile (bot protection) and EmailJS (email)
 - **Sections**: Hero, About, Contact
 
 ## Tech Stack
@@ -18,7 +18,8 @@ A modern portfolio website with an xAI, SpaceX, and Starlink-inspired aesthetic.
 - TypeScript 5.6
 - Vite 5.4
 - Tailwind CSS 3.4
-- EmailJS (client-side email)
+- Cloudflare Turnstile (bot protection)
+- EmailJS (email via REST API)
 
 ## Security
 
@@ -45,7 +46,14 @@ npm run preview
 
 ## Contact Form Setup
 
-The contact form uses **EmailJS** for client-side email delivery — no backend or API keys needed. Emails are sent directly from the browser.
+The contact form uses **Cloudflare Turnstile** (bot protection) and **EmailJS** (email delivery). Submissions are validated server-side before sending.
+
+### Turnstile Setup
+
+1. Go to [Cloudflare Dashboard → Turnstile](https://dash.cloudflare.com/?to=/:account/turnstile)
+2. Add widget — select **"No"** for pre-clearance (required when hosting on Vercel)
+3. Add your domain (e.g. `*.vercel.app`)
+4. Copy **Site Key** and **Secret Key**
 
 ### EmailJS Setup
 
@@ -72,15 +80,17 @@ The contact form uses **EmailJS** for client-side email delivery — no backend 
    - **Reply-To**: `{{email}}` (so Reply goes to the visitor)
 4. Copy your **Service ID**, **Template ID**, and **Public Key**
 
-### Environment Variables (Vercel or .env)
+### Environment Variables (Vercel)
 
 | Variable | Description |
 |----------|-------------|
-| `VITE_EMAILJS_SERVICE_ID` | Your EmailJS service ID |
-| `VITE_EMAILJS_TEMPLATE_ID` | Your EmailJS template ID |
-| `VITE_EMAILJS_PUBLIC_KEY` | Your EmailJS public key |
+| `VITE_TURNSTILE_SITE_KEY` | Turnstile site key (client) |
+| `TURNSTILE_SECRET_KEY` | Turnstile secret key (server) |
+| `EMAILJS_SERVICE_ID` | EmailJS service ID |
+| `EMAILJS_TEMPLATE_ID` | EmailJS template ID |
+| `EMAILJS_PUBLIC_KEY` | EmailJS public key |
 
-**Note:** EmailJS uses public keys (safe for client-side). Free tier: 200 emails/month.
+**Note:** Set all for Production and Preview. Turnstile pre-clearance = No when using Vercel.
 
 For local development, copy `.env.example` to `.env` and fill in your credentials.
 

@@ -1,23 +1,16 @@
 /**
- * ContactSection - Contact form with Turnstile and Resend
+ * ContactSection - Contact form with Resend
  *
- * @purpose Collects messages via form, protected by Cloudflare Turnstile, sent via Resend
+ * @purpose Collects messages via form, sent via Resend to contact@oldaikai.resend.app
  */
 
-import { useState, useRef } from 'react'
-import { Turnstile } from '@marsidev/react-turnstile'
-import type { TurnstileInstance } from '@marsidev/react-turnstile'
+import { useState } from 'react'
 
 const API_URL = '/api/contact'
-
-// Vite env var for Turnstile site key
-const siteKey = import.meta.env.VITE_TURNSTILE_SITE_KEY || '1x00000000000000000000AA'
 
 export function ContactSection() {
   const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle')
   const [errorMessage, setErrorMessage] = useState<string>('')
-  const [turnstileToken, setTurnstileToken] = useState<string | null>(null)
-  const turnstileRef = useRef<TurnstileInstance | null>(null)
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
@@ -25,12 +18,6 @@ export function ContactSection() {
 
     const form = e.currentTarget
     const formData = new FormData(form)
-    const token = turnstileToken ?? (formData.get('cf-turnstile-response') as string | null)
-
-    if (!token) {
-      setErrorMessage('Please complete the verification.')
-      return
-    }
 
     setStatus('loading')
 
@@ -42,7 +29,6 @@ export function ContactSection() {
           name: formData.get('name'),
           email: formData.get('email'),
           message: formData.get('message'),
-          turnstileToken: token,
         }),
       })
 
@@ -51,20 +37,14 @@ export function ContactSection() {
       if (!response.ok) {
         setErrorMessage(data.error ?? 'Something went wrong. Please try again.')
         setStatus('error')
-        turnstileRef.current?.reset()
-        setTurnstileToken(null)
         return
       }
 
       setStatus('success')
       form.reset()
-      setTurnstileToken(null)
-      turnstileRef.current?.reset()
     } catch {
       setErrorMessage('Network error. Please try again.')
       setStatus('error')
-      turnstileRef.current?.reset()
-      setTurnstileToken(null)
     }
   }
 
@@ -136,17 +116,6 @@ export function ContactSection() {
                 disabled={status === 'loading'}
               />
             </div>
-
-            <Turnstile
-              ref={turnstileRef}
-              siteKey={siteKey}
-              options={{
-                theme: 'dark',
-                size: 'normal',
-              }}
-              onSuccess={(token) => setTurnstileToken(token)}
-              onExpire={() => setTurnstileToken(null)}
-            />
 
             {errorMessage && (
               <p className="text-sm text-red-400">{errorMessage}</p>

@@ -19,6 +19,7 @@ export function AboutSection() {
             <p className="text-lg leading-relaxed text-grey-300">
               I recently graduated from General Assembly&apos;s Software Engineering Immersive bootcamp,
               where I learned full-stack development and built a strong foundation in modern web technologies.
+              My background is in analysis, and I bring that same level of detail and rigor into every project I build.
             </p>
             <p className="text-lg leading-relaxed text-grey-300">
               <span className="text-green font-medium">This website is itself a project</span>—a portfolio

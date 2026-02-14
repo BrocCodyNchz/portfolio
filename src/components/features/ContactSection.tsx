@@ -6,6 +6,7 @@
 
 import { useState, useRef } from 'react'
 import { Turnstile } from '@marsidev/react-turnstile'
+import type { TurnstileInstance } from '@marsidev/react-turnstile'
 
 const API_URL = '/api/contact'
 
@@ -13,7 +14,7 @@ export function ContactSection() {
   const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle')
   const [errorMessage, setErrorMessage] = useState<string>('')
   const [turnstileToken, setTurnstileToken] = useState<string | null>(null)
-  const turnstileRef = useRef<{ reset: () => void } | null>(null)
+  const turnstileRef = useRef<TurnstileInstance | null>(null)
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()

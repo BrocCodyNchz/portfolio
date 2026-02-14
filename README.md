@@ -58,8 +58,10 @@ The contact form uses **Resend** for email delivery and **Cloudflare Turnstile**
 | `RESEND_API_KEY` | Your Resend API key |
 | `RESEND_FROM_EMAIL` | Sender email (e.g. `onboarding@resend.dev`) |
 | `RESEND_TO_EMAIL` | Where to receive contact form messages |
-| `VITE_TURNSTILE_SITE_KEY` | Turnstile site key (public) |
+| `VITE_TURNSTILE_SITE_KEY` | Turnstile site key (public) — **use production key** to remove "for testing only" |
 | `TURNSTILE_SECRET_KEY` | Turnstile secret key (server-only) |
+
+**Turnstile:** Get production keys at [Cloudflare Dashboard → Turnstile](https://dash.cloudflare.com/?to=/:account/turnstile). Add a site, choose "Managed" or "Non-interactive", then copy the Site Key and Secret Key. Without production keys, the widget shows "for testing only."
 
 For local development, copy `.env.example` to `.env` and fill in your values. Use `vercel dev` to test the API locally.
 

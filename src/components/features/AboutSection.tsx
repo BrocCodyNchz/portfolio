@@ -27,15 +27,10 @@ export function AboutSection() {
         <div className="grid gap-12 lg:grid-cols-2">
           <div className="space-y-6">
             <p className="text-lg leading-relaxed text-grey-300">
-              I am a Software Engineer focused on building high-performance, scalable web applications.
-              Recently graduated from General Assembly&apos;s Software Engineering Immersive, I&apos;ve
-              transitioned from a career in complex analysis to full-stack development.
+              I’m an aspiring software engineer focused on building reliable, scalable web applications. I recently completed General Assembly’s Software Engineering Bootcamp after years working in complex analysis, where I developed a strong foundation in data modeling and rigorous problem-solving that I now bring to full-stack development.
             </p>
             <p className="text-lg leading-relaxed text-grey-300">
-              I approach code with the same rigor required for data modeling: every component is a
-              mission-critical system. I actively embrace the current AI landscape, integrating
-              intelligent automation into my workflow while advocating for radical transparency and
-              ethical implementation in every model I deploy.
+              I approach code with the same care I applied to mission-critical data models in my previous role—every component needs to be deliberate and dependable because small issues can cascade in production. I use modern technology and AI tools to help automate repetitive tasks and speed up processes like prototyping, testing, and iteration, while always prioritizing transparency: documenting model sources, limitations, and potential biases when outputs could impact real decisions or people.
             </p>
           </div>
           <div className="space-y-6">

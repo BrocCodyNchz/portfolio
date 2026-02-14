@@ -10,11 +10,10 @@ import type { TurnstileInstance } from '@marsidev/react-turnstile'
 
 const API_URL = '/api/contact'
 
-// Injected at build time via vite.config.ts (CLOUD_TURNSTILE_SITE_KEY in Vercel)
-declare const __TURNSTILE_SITE_KEY__: string
+// VITE_ prefix required for Vercel to expose to client build (import.meta.env)
+const siteKey = import.meta.env.VITE_CLOUD_TURNSTILE_SITE_KEY || '1x00000000000000000000AA'
 
 export function ContactSection() {
-  const siteKey = __TURNSTILE_SITE_KEY__
   const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle')
   const [errorMessage, setErrorMessage] = useState<string>('')
   const [turnstileToken, setTurnstileToken] = useState<string | null>(null)

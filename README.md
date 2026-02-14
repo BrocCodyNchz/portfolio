@@ -58,7 +58,7 @@ The contact form uses **Resend** for email delivery and **Cloudflare Turnstile**
 | `RESEND_API_KEY` | Your Resend API key |
 | `RESEND_FROM_EMAIL` | Sender email (e.g. `onboarding@resend.dev`) |
 | `RESEND_TO_EMAIL` | Where to receive contact form messages |
-| `CLOUD_TURNSTILE_SITE_KEY` | Turnstile site key (public) — **use production key** to remove "for testing only" |
+| `VITE_CLOUD_TURNSTILE_SITE_KEY` | Turnstile site key (public) — **VITE_ prefix required** for Vercel build |
 | `TURNSTILE_SECRET_KEY` | Turnstile secret key (server-only) |
 
 **Turnstile (remove "For testing only" message):**
@@ -74,7 +74,7 @@ Without production keys, the widget shows "For testing only. If seen, report to 
 **Still seeing "For testing only" after adding keys?**
 1. In Vercel → Settings → Environment Variables, set **both** Production and Preview for each variable
 2. Trigger a **new deployment** (Deployments → ⋮ → Redeploy)—env vars only apply to new builds
-3. Confirm the variable name is exactly `CLOUD_TURNSTILE_SITE_KEY` (case-sensitive)
+3. Confirm the variable name is exactly `VITE_CLOUD_TURNSTILE_SITE_KEY` (VITE_ prefix required for Vite)
 
 For local development, copy `.env.example` to `.env` and fill in your values. Use `vercel dev` to test the API locally.
 

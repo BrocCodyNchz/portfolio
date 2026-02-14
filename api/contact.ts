@@ -27,6 +27,7 @@ async function validateTurnstile(token: string, remoteip?: string): Promise<{ su
 
     const response = await fetch('https://challenges.cloudflare.com/turnstile/v0/siteverify', {
       method: 'POST',
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
       body: formData,
     })
     return (await response.json()) as { success: boolean; 'error-codes'?: string[] }

@@ -9,7 +9,7 @@ A modern portfolio website with an xAI, SpaceX, and Starlink-inspired aesthetic.
 - **Dark theme** with high contrast and spring green accents
 - **Responsive design** with mobile-first hamburger navigation
 - **Glass morphism** effects and smooth transitions
-- **Contact form** with nodemailer (SMTP email delivery)
+- **Contact form** with Cloudflare Turnstile (bot protection with pre-clearance) and Resend (email delivery)
 - **Sections**: Hero, About, Contact
 
 ## Tech Stack
@@ -18,7 +18,8 @@ A modern portfolio website with an xAI, SpaceX, and Starlink-inspired aesthetic.
 - TypeScript 5.6
 - Vite 5.4
 - Tailwind CSS 3.4
-- Nodemailer (SMTP email)
+- Cloudflare Turnstile (bot protection with pre-clearance)
+- Resend (email delivery)
 
 ## Security
 
@@ -45,24 +46,43 @@ npm run preview
 
 ## Contact Form Setup
 
-The contact form uses **nodemailer** for direct SMTP email sending to `codydev.expire209@passinbox.com`.
+The contact form uses **Cloudflare Turnstile** (Feb 2026 with pre-clearance support) for bot protection and **Resend** for email delivery.
 
-1. **SMTP Provider**: Use Gmail, Outlook, or another SMTP service.
-2. **Gmail Setup** (recommended):
-   - Enable 2FA in Google Account settings
-   - Generate an App Password: [https://myaccount.google.com/apppasswords](https://myaccount.google.com/apppasswords)
-   - Use the 16-character app password (not your regular password)
+**Email:** Messages are sent from `contact@oldaikai.resend.app` to `codydev.expire209@passinbox.com`.
 
-3. Add environment variables in Vercel (Project → Settings → Environment Variables):
+### Turnstile Setup (Pre-clearance enabled)
+
+1. Go to [Cloudflare Dashboard → Turnstile](https://dash.cloudflare.com/?to=/:account/turnstile)
+2. Click **Add widget**
+3. **Enable pre-clearance**: Select "Yes" when asked "Would you like to opt for pre-clearance for this site?"
+4. **Choose clearance level**:
+   - `managed` (recommended) - bypasses Managed and JS challenges
+   - `interactive` (high security) - bypasses all challenge types
+   - `jschallenge` (low) - bypasses only JS challenges
+5. Add your domain (e.g. `your-portfolio.vercel.app`) or use `*` for all
+6. Copy the **Site Key** and **Secret Key**
+
+### Resend Setup
+
+1. Sign up at [resend.com](https://resend.com)
+2. Verify your domain `oldaikai.resend.app` (if not already verified)
+3. Create an API key
+
+### Vercel Environment Variables
 
 | Variable | Description |
 |----------|-------------|
-| `SMTP_HOST` | SMTP server (e.g. `smtp.gmail.com`) |
-| `SMTP_PORT` | SMTP port (`587` for TLS, `465` for SSL) |
-| `SMTP_USER` | Your email address |
-| `SMTP_PASS` | App password (for Gmail) or account password |
+| `VITE_TURNSTILE_SITE_KEY` | Turnstile site key (public) — **VITE_ prefix required** |
+| `TURNSTILE_SECRET_KEY` | Turnstile secret key (server-only) |
+| `RESEND_API_KEY` | Your Resend API key |
 
-For local development, copy `.env.example` to `.env` and fill in your SMTP credentials.
+**Pre-clearance benefits:**
+- Issues `cf_clearance` cookie to verified visitors
+- Bypasses WAF challenges based on clearance level
+- Reduces friction for legitimate users
+- Cookie valid for duration set in Challenge Passage settings
+
+For local development, copy `.env.example` to `.env` and fill in your credentials.
 
 ## Customization
 

@@ -61,7 +61,15 @@ The contact form uses **Resend** for email delivery and **Cloudflare Turnstile**
 | `VITE_TURNSTILE_SITE_KEY` | Turnstile site key (public) — **use production key** to remove "for testing only" |
 | `TURNSTILE_SECRET_KEY` | Turnstile secret key (server-only) |
 
-**Turnstile:** Get production keys at [Cloudflare Dashboard → Turnstile](https://dash.cloudflare.com/?to=/:account/turnstile). Add a site, choose "Managed" or "Non-interactive", then copy the Site Key and Secret Key. Without production keys, the widget shows "for testing only."
+**Turnstile (remove "For testing only" message):**
+1. Go to [Cloudflare Dashboard → Turnstile](https://dash.cloudflare.com/?to=/:account/turnstile)
+2. Click **Add site**
+3. Enter your domain (e.g. `your-portfolio.vercel.app`) or use `*` for all
+4. Choose **Managed** (recommended) or **Non-interactive**
+5. Copy the **Site Key** and **Secret Key**
+6. Add both to Vercel Environment Variables and redeploy
+
+Without production keys, the widget shows "For testing only. If seen, report to site owner."
 
 For local development, copy `.env.example` to `.env` and fill in your values. Use `vercel dev` to test the API locally.
 

@@ -10,6 +10,9 @@ import type { TurnstileInstance } from '@marsidev/react-turnstile'
 
 const API_URL = '/api/contact'
 
+// Cloudflare test keys always show "For testing only" - production keys remove this
+const TURNSTILE_TEST_SITE_KEY = '1x00000000000000000000AA'
+
 export function ContactSection() {
   const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle')
   const [errorMessage, setErrorMessage] = useState<string>('')
@@ -136,7 +139,7 @@ export function ContactSection() {
 
             <Turnstile
               ref={turnstileRef}
-              siteKey={import.meta.env.VITE_TURNSTILE_SITE_KEY ?? '1x00000000000000000000AA'}
+              siteKey={import.meta.env.VITE_TURNSTILE_SITE_KEY ?? TURNSTILE_TEST_SITE_KEY}
               options={{
                 theme: 'dark',
                 size: 'normal',
@@ -144,6 +147,11 @@ export function ContactSection() {
               onSuccess={(token) => setTurnstileToken(token)}
               onExpire={() => setTurnstileToken(null)}
             />
+            {import.meta.env.DEV && (import.meta.env.VITE_TURNSTILE_SITE_KEY ?? TURNSTILE_TEST_SITE_KEY) === TURNSTILE_TEST_SITE_KEY && (
+              <p className="text-xs text-grey-500">
+                Dev: Using test keys. Add production keys in Vercel to remove &quot;For testing only.&quot; See README.
+              </p>
+            )}
 
             {errorMessage && (
               <p className="text-sm text-red-400">{errorMessage}</p>

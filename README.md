@@ -51,16 +51,25 @@ The contact form uses **EmailJS** for client-side email delivery — no backend 
 
 1. Sign up at [emailjs.com](https://www.emailjs.com/)
 2. **Add Email Service**: Connect Gmail, Outlook, or another provider
-3. **Create Email Template** — add these variables exactly (case-sensitive):
-   - `{{from_name}}` — sender's name
-   - `{{from_email}}` — sender's email (for reply)
-   - `{{message}}` — the message content
+3. **Create Email Template** — use the "Contact Us" template or add these variables to the body:
+   - `{{name}}` — visitor's name
+   - `{{email}}` — **visitor's email (required so you can contact them back)**
+   - `{{message}}` — their message
+   - `{{time}}` — submission timestamp (optional)
    
-   Example template body:
+   **Template body example** (paste into Content field):
    ```
-   From: {{from_name}} ({{from_email}})
+   New contact form submission
+   
+   Name: {{name}}
+   Email: {{email}}
    Message: {{message}}
+   Submitted: {{time}}
    ```
+   
+   **Template settings:**
+   - **To Email**: Your email (where you receive submissions)
+   - **Reply-To**: `{{email}}` (so Reply goes to the visitor)
 4. Copy your **Service ID**, **Template ID**, and **Public Key**
 
 ### Environment Variables (Vercel or .env)

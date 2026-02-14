@@ -9,7 +9,7 @@ A modern portfolio website with an xAI, SpaceX, and Starlink-inspired aesthetic.
 - **Dark theme** with high contrast and spring green accents
 - **Responsive design** with mobile-first hamburger navigation
 - **Glass morphism** effects and smooth transitions
-- **Contact form** with Resend (email delivery)
+- **Contact form** with EmailJS (client-side email)
 - **Sections**: Hero, About, Contact
 
 ## Tech Stack
@@ -18,7 +18,7 @@ A modern portfolio website with an xAI, SpaceX, and Starlink-inspired aesthetic.
 - TypeScript 5.6
 - Vite 5.4
 - Tailwind CSS 3.4
-- Resend (email delivery)
+- EmailJS (client-side email)
 
 ## Security
 
@@ -45,23 +45,27 @@ npm run preview
 
 ## Contact Form Setup
 
-The contact form uses **Resend** for email delivery. You must verify a domain at [resend.com/domains](https://resend.com/domains) — the testing sender (`onboarding@resend.dev`) is not for production use.
+The contact form uses **EmailJS** for client-side email delivery — no backend or API keys needed. Emails are sent directly from the browser.
 
-### Resend Setup
+### EmailJS Setup
 
-1. Sign up at [resend.com](https://resend.com)
-2. Add and verify your domain at [resend.com/domains](https://resend.com/domains) (add DNS records they provide)
-3. Create an API key at [resend.com/api-keys](https://resend.com/api-keys)
+1. Sign up at [emailjs.com](https://www.emailjs.com/)
+2. **Add Email Service**: Connect Gmail, Outlook, or another provider
+3. **Create Email Template** with these variables:
+   - `{{from_name}}` — sender's name
+   - `{{from_email}}` — sender's email (for reply)
+   - `{{message}}` — the message content
+4. Copy your **Service ID**, **Template ID**, and **Public Key**
 
-### Vercel Environment Variables
+### Environment Variables (Vercel or .env)
 
 | Variable | Description |
 |----------|-------------|
-| `RESEND_API_KEY` | Your Resend API key |
-| `RESEND_FROM_EMAIL` | Sender address (must use your verified domain, e.g. `contact@yourdomain.com`) |
-| `RESEND_TO_EMAIL` | Where to receive contact form messages |
+| `VITE_EMAILJS_SERVICE_ID` | Your EmailJS service ID |
+| `VITE_EMAILJS_TEMPLATE_ID` | Your EmailJS template ID |
+| `VITE_EMAILJS_PUBLIC_KEY` | Your EmailJS public key |
 
-**Keep these in Vercel only** — never commit emails or API keys to the repo.
+**Note:** EmailJS uses public keys (safe for client-side). Free tier: 200 emails/month.
 
 For local development, copy `.env.example` to `.env` and fill in your credentials.
 

@@ -1,14 +1,18 @@
 /**
- * ContactSection - Contact form with Resend
+ * ContactSection - Contact form with EmailJS
  *
- * @purpose Collects messages via form, sent via Resend to contact@oldaikai.resend.app
+ * @purpose Collects messages via form, sent via EmailJS (client-side, no backend needed)
  */
 
-import { useState } from 'react'
+import { useState, useRef } from 'react'
+import emailjs from '@emailjs/browser'
 
-const API_URL = '/api/contact'
+const SERVICE_ID = import.meta.env.VITE_EMAILJS_SERVICE_ID
+const TEMPLATE_ID = import.meta.env.VITE_EMAILJS_TEMPLATE_ID
+const PUBLIC_KEY = import.meta.env.VITE_EMAILJS_PUBLIC_KEY
 
 export function ContactSection() {
+  const formRef = useRef<HTMLFormElement>(null)
   const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle')
   const [errorMessage, setErrorMessage] = useState<string>('')
 
@@ -16,34 +20,23 @@ export function ContactSection() {
     e.preventDefault()
     setErrorMessage('')
 
-    const form = e.currentTarget
-    const formData = new FormData(form)
+    if (!formRef.current || !SERVICE_ID || !TEMPLATE_ID || !PUBLIC_KEY) {
+      setErrorMessage('Email service is not configured.')
+      setStatus('error')
+      return
+    }
 
     setStatus('loading')
 
     try {
-      const response = await fetch(API_URL, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          name: formData.get('name'),
-          email: formData.get('email'),
-          message: formData.get('message'),
-        }),
+      await emailjs.sendForm(SERVICE_ID, TEMPLATE_ID, formRef.current, {
+        publicKey: PUBLIC_KEY,
       })
-
-      const data = (await response.json()) as { error?: string; success?: boolean }
-
-      if (!response.ok) {
-        setErrorMessage(data.error ?? 'Something went wrong. Please try again.')
-        setStatus('error')
-        return
-      }
-
       setStatus('success')
-      form.reset()
-    } catch {
-      setErrorMessage('Network error. Please try again.')
+      formRef.current.reset()
+    } catch (err) {
+      console.error('EmailJS error:', err)
+      setErrorMessage('Failed to send message. Please try again.')
       setStatus('error')
     }
   }
@@ -68,14 +61,14 @@ export function ContactSection() {
             <p className="mt-2 text-grey-300">Thanks for reaching out. I&apos;ll get back to you soon.</p>
           </div>
         ) : (
-          <form onSubmit={handleSubmit} className="space-y-6">
+          <form ref={formRef} onSubmit={handleSubmit} className="space-y-6">
             <div>
-              <label htmlFor="name" className="mb-2 block text-sm font-medium text-grey-300">
+              <label htmlFor="from_name" className="mb-2 block text-sm font-medium text-grey-300">
                 Name
               </label>
               <input
-                id="name"
-                name="name"
+                id="from_name"
+                name="from_name"
                 type="text"
                 required
                 maxLength={100}
@@ -86,12 +79,12 @@ export function ContactSection() {
               />
             </div>
             <div>
-              <label htmlFor="email" className="mb-2 block text-sm font-medium text-grey-300">
+              <label htmlFor="from_email" className="mb-2 block text-sm font-medium text-grey-300">
                 Email
               </label>
               <input
-                id="email"
-                name="email"
+                id="from_email"
+                name="from_email"
                 type="email"
                 required
                 maxLength={254}

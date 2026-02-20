@@ -42,8 +42,9 @@ agents/**/*.md
 Agents/
 Agents/**/*.md
 
-# Work summary (may contain sensitive dev process info)
+# Work summary & planning (may contain sensitive dev process info)
 WORK_SUMMARY.md
+PLAN.md
 
 # Local preview / dev artifacts (outdated content, no Turnstile)
 preview.html

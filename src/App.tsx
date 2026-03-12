@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { Header } from './components/layout/Header'
 import { HeroSection } from './components/features/HeroSection'
 import { AboutSection } from './components/features/AboutSection'
+import { ProjectsSection } from './components/features/ProjectsSection'
 import { ContactSection } from './components/features/ContactSection'
 import { Footer } from './components/layout/Footer'
 
@@ -16,6 +17,7 @@ function App() {
       <main>
         <HeroSection />
         <AboutSection />
+        <ProjectsSection />
         <ContactSection />
       </main>
       <Footer />

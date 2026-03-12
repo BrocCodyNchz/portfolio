@@ -9,8 +9,8 @@ A modern portfolio website with an xAI, SpaceX, and Starlink-inspired aesthetic.
 - **Dark theme** with high contrast and spring green accents
 - **Responsive design** with mobile-first hamburger navigation
 - **Glass morphism** effects and smooth transitions
-- **Contact form** with Turnstile (bot protection) and EmailJS (email)
-- **Sections**: Hero, About, Contact
+- **Contact form** with EmailJS (email) and Vercel bot protection
+- **Sections**: Hero, About, Projects, Contact
 
 ## Tech Stack
 
@@ -18,7 +18,7 @@ A modern portfolio website with an xAI, SpaceX, and Starlink-inspired aesthetic.
 - TypeScript 5.6
 - Vite 5.4
 - Tailwind CSS 3.4
-- Cloudflare Turnstile (bot protection)
+- Vercel bot protection
 - EmailJS (email via REST API)
 
 ## Security
@@ -46,14 +46,7 @@ npm run preview
 
 ## Contact Form Setup
 
-The contact form uses **Cloudflare Turnstile** (bot protection) and **EmailJS** (email delivery). Submissions are validated server-side before sending.
-
-### Turnstile Setup
-
-1. Go to [Cloudflare Dashboard → Turnstile](https://dash.cloudflare.com/?to=/:account/turnstile)
-2. Add widget — select **"No"** for pre-clearance (required when hosting on Vercel)
-3. Add your domain (e.g. `*.vercel.app`)
-4. Copy **Site Key** and **Secret Key**
+The contact form uses **Vercel bot protection** and **EmailJS** (email delivery). Submissions are validated server-side before sending.
 
 ### EmailJS Setup
 
@@ -84,8 +77,6 @@ The contact form uses **Cloudflare Turnstile** (bot protection) and **EmailJS** 
 
 | Variable | Description |
 |----------|-------------|
-| `VITE_TURNSTILE_SITE_KEY` | Turnstile site key (client) |
-| `TURNSTILE_SECRET_KEY` | Turnstile secret key (server) |
 | `EMAILJS_SERVICE_ID` | EmailJS service ID |
 | `EMAILJS_TEMPLATE_ID` | EmailJS template ID |
 | `EMAILJS_PUBLIC_KEY` | EmailJS public key |
@@ -93,15 +84,16 @@ The contact form uses **Cloudflare Turnstile** (bot protection) and **EmailJS** 
 
 **EmailJS server-side:** Go to [Account → Security](https://dashboard.emailjs.com/admin/account/security) and enable "Allow API calls from non-browser applications". Generate a Private Key there and add it as `EMAILJS_PRIVATE_KEY`.
 
-**Note:** Set all for Production and Preview. Turnstile pre-clearance = No when using Vercel.
+**Note:** Set all for Production and Preview. Bot protection is handled by Vercel.
 
 For local development, create a `.env` file with the variables above.
 
 ## Customization
 
 1. **About**: Update `src/components/features/AboutSection.tsx` with your bio
-2. **Contact**: Change social links in `src/components/features/ContactSection.tsx`
-3. **Branding**: Update the site title in `index.html` and header in `Header.tsx`
+2. **Projects**: Update `src/components/features/ProjectsSection.tsx` with your projects
+3. **Contact**: Change social links in `src/components/features/ContactSection.tsx`
+4. **Branding**: Update the site title in `index.html` and header in `Header.tsx`
 
 ## Design
 

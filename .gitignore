@@ -46,5 +46,5 @@ Agents/**/*.md
 WORK_SUMMARY.md
 PLAN.md
 
-# Local preview / dev artifacts (outdated content, no Turnstile)
+# Local preview / dev artifacts
 preview.html

@@ -27,7 +27,7 @@ export function Header({ isMenuOpen, onMenuToggle, onCloseMenu }: HeaderProps) {
   return (
     <header className="fixed top-0 left-0 right-0 z-50 border-b border-white/10 bg-black/80 backdrop-blur-lg transition-all duration-300">
       <nav className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4">
-        <a href="#" className="text-xl font-semibold tracking-tight text-white transition-colors hover:text-green">
+        <a href="#" className="text-xl font-semibold tracking-tight text-white transition-colors hover:text-green focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green/25 focus-visible:ring-offset-2 focus-visible:ring-offset-black rounded-sm">
           Cody McFarland
         </a>
 
@@ -37,7 +37,7 @@ export function Header({ isMenuOpen, onMenuToggle, onCloseMenu }: HeaderProps) {
             <li key={link.href}>
               <a
                 href={link.href}
-                className="text-sm font-medium text-grey-300 transition-colors hover:text-white"
+                className="text-sm font-medium text-grey-300 transition-colors hover:text-green focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green/25 focus-visible:ring-offset-2 focus-visible:ring-offset-black rounded-sm"
               >
                 {link.label}
               </a>
@@ -51,7 +51,7 @@ export function Header({ isMenuOpen, onMenuToggle, onCloseMenu }: HeaderProps) {
           aria-label={isMenuOpen ? 'Close menu' : 'Open menu'}
           aria-expanded={isMenuOpen}
           onClick={onMenuToggle}
-          className="flex h-11 w-11 flex-col items-center justify-center gap-1.5 rounded-lg border border-white/10 bg-grey-900/50 transition-all hover:border-green/30 hover:bg-grey-900 md:hidden"
+          className="flex h-11 w-11 flex-col items-center justify-center gap-1.5 rounded-lg border border-white/10 bg-grey-900/50 transition-all hover:border-green/30 hover:bg-grey-900 md:hidden focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green/25 focus-visible:ring-offset-2 focus-visible:ring-offset-black"
         >
           <span
             className={`h-0.5 w-5 bg-white transition-all duration-300 ${isMenuOpen ? 'translate-y-2 rotate-45' : ''}`}
@@ -65,7 +65,7 @@ export function Header({ isMenuOpen, onMenuToggle, onCloseMenu }: HeaderProps) {
 
       {/* Mobile menu overlay */}
       <div
-        className={`fixed inset-0 top-[73px] bg-black/60 backdrop-blur-sm transition-opacity duration-300 md:hidden ${
+        className={`fixed inset-0 top-[var(--header-height)] bg-black/60 backdrop-blur-sm transition-opacity duration-300 md:hidden ${
           isMenuOpen ? 'pointer-events-auto opacity-100' : 'pointer-events-none opacity-0'
         }`}
         onClick={onCloseMenu}
@@ -74,7 +74,7 @@ export function Header({ isMenuOpen, onMenuToggle, onCloseMenu }: HeaderProps) {
 
       {/* Mobile menu panel */}
       <div
-        className={`fixed right-0 top-[73px] z-50 w-72 border-l border-white/10 bg-grey-900/95 backdrop-blur-xl transition-transform duration-300 ease-in-out md:hidden ${
+        className={`fixed right-0 top-[var(--header-height)] z-50 w-72 border-l border-white/10 bg-grey-900/95 backdrop-blur-xl transition-transform duration-300 ease-in-out md:hidden ${
           isMenuOpen ? 'translate-x-0' : 'translate-x-full'
         }`}
       >
@@ -84,7 +84,7 @@ export function Header({ isMenuOpen, onMenuToggle, onCloseMenu }: HeaderProps) {
               <a
                 href={link.href}
                 onClick={handleLinkClick}
-                className="block py-3 text-base font-medium text-grey-300 transition-colors hover:text-green"
+                className="block py-3 text-base font-medium text-grey-300 transition-colors hover:text-green focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green/25 focus-visible:ring-offset-2 focus-visible:ring-offset-black rounded"
               >
                 {link.label}
               </a>

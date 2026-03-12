@@ -22,13 +22,13 @@ export function HeroSection() {
         <div className="flex flex-col items-center justify-center gap-4 opacity-0 animate-slide-up [animation-delay:600ms] sm:flex-row">
           <a
             href="#about"
-            className="inline-flex items-center justify-center rounded-lg bg-green px-8 py-4 font-semibold text-black transition-all duration-300 hover:bg-green-dark hover:shadow-[0_0_30px_rgba(0,255,127,0.4)] hover:-translate-y-1"
+            className="inline-flex items-center justify-center rounded-lg bg-green px-8 py-4 font-semibold text-black transition-colors transition-shadow transition-transform duration-300 hover:bg-green-hover hover:shadow-[0_0_30px_rgba(0,255,127,0.4)] hover:-translate-y-px active:bg-green-dark active:translate-y-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green/25 focus-visible:ring-offset-2 focus-visible:ring-offset-black"
           >
             Learn More
           </a>
           <a
             href="#contact"
-            className="inline-flex items-center justify-center rounded-lg border-2 border-green/50 px-8 py-4 font-semibold text-white transition-all duration-300 hover:border-green hover:bg-green/10"
+            className="inline-flex items-center justify-center rounded-lg border-2 border-green/50 px-8 py-4 font-semibold text-white transition-colors transition-shadow transition-transform duration-300 hover:border-green hover:bg-green/10 active:border-green-dark active:bg-green/15 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green/25 focus-visible:ring-offset-2 focus-visible:ring-offset-black"
           >
             Get in Touch
           </a>

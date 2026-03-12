@@ -36,7 +36,7 @@ export function ProjectsSection() {
               href={project.href}
               target="_blank"
               rel="noopener noreferrer"
-              className="group block rounded-xl border border-white/10 bg-grey-900/30 p-8 transition-all duration-300 hover:border-green/30 hover:bg-grey-900/50 hover:shadow-[0_0_30px_rgba(0,255,127,0.08)]"
+              className="group block rounded-xl border border-white/10 bg-grey-900/30 p-8 transition-all duration-300 hover:border-green/30 hover:bg-grey-900/50 hover:shadow-[0_0_30px_rgba(0,255,127,0.08)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green/25 focus-visible:ring-offset-2 focus-visible:ring-offset-black"
             >
               <span className="mb-2 inline-block text-xs font-medium uppercase tracking-wider text-green">
                 {project.type}

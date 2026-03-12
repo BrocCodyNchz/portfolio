@@ -5,6 +5,7 @@
  */
 
 import { useState, useRef } from 'react'
+import { LIMITS } from '../../../constants/contact'
 
 const API_URL = '/api/contact'
 
@@ -80,9 +81,9 @@ export function ContactSection() {
                 name="from_name"
                 type="text"
                 required
-                maxLength={100}
+                maxLength={LIMITS.name}
                 autoComplete="name"
-                className="w-full rounded-lg border border-white/20 bg-grey-900/50 px-4 py-3 text-white placeholder-grey-500 focus:border-green focus:outline-none focus:ring-2 focus:ring-green/20"
+                className={`w-full rounded-lg border bg-grey-900/50 px-4 py-3 text-white placeholder-grey-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green/20 disabled:opacity-60 disabled:cursor-not-allowed ${status === 'error' ? 'border-error ring-2 ring-error/20' : 'border-white/20'}`}
                 placeholder="Your name"
                 disabled={status === 'loading'}
               />
@@ -96,9 +97,9 @@ export function ContactSection() {
                 name="from_email"
                 type="email"
                 required
-                maxLength={254}
+                maxLength={LIMITS.email}
                 autoComplete="email"
-                className="w-full rounded-lg border border-white/20 bg-grey-900/50 px-4 py-3 text-white placeholder-grey-500 focus:border-green focus:outline-none focus:ring-2 focus:ring-green/20"
+                className={`w-full rounded-lg border bg-grey-900/50 px-4 py-3 text-white placeholder-grey-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green/20 disabled:opacity-60 disabled:cursor-not-allowed ${status === 'error' ? 'border-error ring-2 ring-error/20' : 'border-white/20'}`}
                 placeholder="you@example.com"
                 disabled={status === 'loading'}
               />
@@ -112,19 +113,19 @@ export function ContactSection() {
                 name="message"
                 required
                 rows={5}
-                maxLength={5000}
-                className="w-full resize-none rounded-lg border border-white/20 bg-grey-900/50 px-4 py-3 text-white placeholder-grey-500 focus:border-green focus:outline-none focus:ring-2 focus:ring-green/20"
+                maxLength={LIMITS.message}
+                className={`w-full resize-none rounded-lg border bg-grey-900/50 px-4 py-3 text-white placeholder-grey-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green/20 disabled:opacity-60 disabled:cursor-not-allowed ${status === 'error' ? 'border-error ring-2 ring-error/20' : 'border-white/20'}`}
                 placeholder="Tell me about your project..."
                 disabled={status === 'loading'}
               />
             </div>
 
-            {errorMessage && <p className="text-sm text-red-400">{errorMessage}</p>}
+            {errorMessage && <p className="text-sm text-error">{errorMessage}</p>}
 
             <button
               type="submit"
               disabled={status === 'loading'}
-              className="w-full rounded-lg bg-green px-8 py-4 font-semibold text-black transition-all duration-300 hover:bg-green-dark hover:shadow-[0_0_30px_rgba(0,255,127,0.4)] disabled:cursor-not-allowed disabled:opacity-50"
+              className="w-full rounded-lg bg-green px-8 py-4 font-semibold text-black transition-colors transition-shadow transition-transform duration-300 hover:bg-green-hover hover:shadow-[0_0_30px_rgba(0,255,127,0.4)] hover:-translate-y-px active:bg-green-dark active:translate-y-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green/25 focus-visible:ring-offset-2 focus-visible:ring-offset-black disabled:cursor-not-allowed disabled:opacity-50"
             >
               {status === 'loading' ? 'Sending...' : 'Send Message'}
             </button>

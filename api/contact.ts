@@ -1,22 +1,43 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node'
+import { Ratelimit } from '@upstash/ratelimit'
+import { Redis } from '@upstash/redis'
+import { LIMITS } from '../constants/contact'
 
-const LIMITS = { name: 100, email: 254, message: 5000 } as const
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+
+/** Strip CRLF and Unicode line/paragraph separators to prevent header/body injection */
+const sanitize = (s: string) => s.replace(/[\r\n\u2028\u2029]+/g, ' ').trim()
+
+const ratelimit =
+  process.env.UPSTASH_REDIS_REST_URL && process.env.UPSTASH_REDIS_REST_TOKEN
+    ? new Ratelimit({
+        redis: Redis.fromEnv(),
+        limiter: Ratelimit.slidingWindow(5, '1 m'),
+      })
+    : null
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
   if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' })
   res.setHeader('Content-Type', 'application/json')
 
   try {
+    if (ratelimit) {
+      const ip = (req.headers['x-forwarded-for'] as string)?.split(',')[0]?.trim() ?? req.headers['x-real-ip'] ?? 'unknown'
+      const { success } = await ratelimit.limit(`contact:${ip}`)
+      if (!success) {
+        return res.status(429).json({ error: 'Too many requests. Please try again in a minute.' })
+      }
+    }
+
     const { name, email, message } = req.body as Record<string, unknown>
 
     if (!name || !email || !message || typeof name !== 'string' || typeof email !== 'string' || typeof message !== 'string') {
       return res.status(400).json({ error: 'Name, email, and message are required' })
     }
 
-    const nameTrimmed = name.trim()
-    const emailTrimmed = email.trim()
-    const messageTrimmed = message.trim()
+    const nameTrimmed = sanitize(name)
+    const emailTrimmed = sanitize(email)
+    const messageTrimmed = sanitize(message)
 
     if (!nameTrimmed || !emailTrimmed || !messageTrimmed) {
       return res.status(400).json({ error: 'Name, email, and message are required' })

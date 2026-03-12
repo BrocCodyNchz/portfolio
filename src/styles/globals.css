@@ -10,8 +10,21 @@
   --grey-900: #1A1A1A;
   --grey-800: #2A2A2A;
   --grey-700: #404040;
+  --header-height: 73px;
   --transition-base: 0.3s;
   --ease-smooth: cubic-bezier(0.45, 0, 0.15, 1);
+  /* Typography scale (Agent_Branding) */
+  --text-xs: 0.6875rem;
+  --text-sm: 0.8125rem;
+  --text-base: 0.9375rem;
+  --text-md: 1rem;
+  --text-lg: 1.125rem;
+  --text-xl: 1.25rem;
+  --text-2xl: 1.5rem;
+  --text-3xl: 1.875rem;
+  --text-4xl: 2.5rem;
+  --text-5xl: 3.25rem;
+  --text-6xl: 4rem;
 }
 
 * {
@@ -22,7 +35,7 @@
 
 html {
   scroll-behavior: smooth;
-  scroll-padding-top: 80px; /* Account for fixed navigation */
+  scroll-padding-top: var(--header-height);
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -35,6 +48,8 @@ html {
 
 body {
   font-family: 'Inter', system-ui, sans-serif;
+  font-feature-settings: 'ss01', 'cv01', 'cv02';
+  font-optical-sizing: auto;
   background-color: var(--color-black);
   color: var(--color-white);
   min-height: 100vh;

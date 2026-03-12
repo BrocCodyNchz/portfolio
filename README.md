@@ -81,8 +81,12 @@ The contact form uses **Vercel bot protection** and **EmailJS** (email delivery)
 | `EMAILJS_TEMPLATE_ID` | EmailJS template ID |
 | `EMAILJS_PUBLIC_KEY` | EmailJS public key |
 | `EMAILJS_PRIVATE_KEY` | EmailJS private key (required for server-side) |
+| `UPSTASH_REDIS_REST_URL` | Upstash Redis REST URL (for rate limiting) |
+| `UPSTASH_REDIS_REST_TOKEN` | Upstash Redis REST token (for rate limiting) |
 
 **EmailJS server-side:** Go to [Account → Security](https://dashboard.emailjs.com/admin/account/security) and enable "Allow API calls from non-browser applications". Generate a Private Key there and add it as `EMAILJS_PRIVATE_KEY`.
+
+**Rate limiting:** The contact API uses Upstash Redis for rate limiting (5 requests/minute per IP). Create a free database at [Upstash Console](https://console.upstash.com/), then add `UPSTASH_REDIS_REST_URL` and `UPSTASH_REDIS_REST_TOKEN` to Vercel. If unset, rate limiting is skipped (form still works).
 
 **Note:** Set all for Production and Preview. Bot protection is handled by Vercel.
 

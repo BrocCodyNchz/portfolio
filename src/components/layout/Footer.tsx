@@ -13,10 +13,10 @@ export function Footer() {
         <div className="flex flex-col items-center justify-between gap-4 sm:flex-row">
           <p className="text-sm text-grey-500">© {CURRENT_YEAR} Cody McFarland. All rights reserved.</p>
           <div className="flex gap-6">
-            <a href="#about" className="text-sm text-grey-500 transition-colors hover:text-green">
+            <a href="#about" className="text-sm text-grey-500 transition-colors hover:text-green focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green/25 focus-visible:ring-offset-2 focus-visible:ring-offset-black rounded">
               About
             </a>
-            <a href="#contact" className="text-sm text-grey-500 transition-colors hover:text-green">
+            <a href="#contact" className="text-sm text-grey-500 transition-colors hover:text-green focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green/25 focus-visible:ring-offset-2 focus-visible:ring-offset-black rounded">
               Contact
             </a>
           </div>

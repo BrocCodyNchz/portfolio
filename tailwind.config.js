@@ -11,6 +11,7 @@ export default {
         white: '#FEFEFE',
         green: {
           DEFAULT: '#00FF7F',
+          hover: '#00E572',
           dark: '#00CC66',
           pressed: '#00B359',
         },
@@ -21,9 +22,23 @@ export default {
           500: '#808080',
           300: '#B0B0B0',
         },
+        error: '#FF4444',
       },
       fontFamily: {
         sans: ['Inter', 'system-ui', 'sans-serif'],
+      },
+      fontSize: {
+        xs: ['var(--text-xs)', { lineHeight: '1.4' }],
+        sm: ['var(--text-sm)', { lineHeight: '1.4' }],
+        base: ['var(--text-base)', { lineHeight: '1.6' }],
+        md: ['var(--text-md)', { lineHeight: '1.6' }],
+        lg: ['var(--text-lg)', { lineHeight: '1.5' }],
+        xl: ['var(--text-xl)', { lineHeight: '1.4' }],
+        '2xl': ['var(--text-2xl)', { lineHeight: '1.3' }],
+        '3xl': ['var(--text-3xl)', { lineHeight: '1.2' }],
+        '4xl': ['var(--text-4xl)', { lineHeight: '1.2' }],
+        '5xl': ['var(--text-5xl)', { lineHeight: '1.1' }],
+        '6xl': ['var(--text-6xl)', { lineHeight: '1.1' }],
       },
       animation: {
         'fade-in': 'fadeIn 0.8s ease-out forwards',

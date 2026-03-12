@@ -45,6 +45,10 @@ Agents/**/*.md
 # Work summary & planning (may contain sensitive dev process info)
 WORK_SUMMARY.md
 PLAN.md
+docs/governance/AI_INVENTORY.md
+docs/governance/RISK_REGISTER.md
+docs/governance/CONTROL_CATALOG.md
+docs/governance/COMPLIANCE_MATRIX.md
 
 # Local preview / dev artifacts
 preview.html

@@ -40,7 +40,7 @@ export function AboutSection() {
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label="GitHub"
-                className="flex h-14 w-14 items-center justify-center rounded-xl border border-white/20 text-grey-300 transition-all hover:border-green/50 hover:bg-green/10 hover:text-green"
+                className="flex h-14 w-14 items-center justify-center rounded-xl border border-white/20 text-grey-300 transition-all duration-300 hover:border-green/50 hover:bg-green/10 hover:text-green focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green/25 focus-visible:ring-offset-2 focus-visible:ring-offset-black active:border-green active:bg-green/20"
               >
                 <GitHubIcon />
               </a>
@@ -49,7 +49,7 @@ export function AboutSection() {
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label="LinkedIn"
-                className="flex h-14 w-14 items-center justify-center rounded-xl border border-white/20 text-grey-300 transition-all hover:border-green/50 hover:bg-green/10 hover:text-green"
+                className="flex h-14 w-14 items-center justify-center rounded-xl border border-white/20 text-grey-300 transition-all duration-300 hover:border-green/50 hover:bg-green/10 hover:text-green focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green/25 focus-visible:ring-offset-2 focus-visible:ring-offset-black active:border-green active:bg-green/20"
               >
                 <LinkedInIcon />
               </a>
